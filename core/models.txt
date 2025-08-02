@@ -1,0 +1,90 @@
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.db import models
+import random
+import string
+
+
+class CustomUserManager(BaseUserManager):
+    def generate_promo_code(self):
+        characters = string.ascii_letters + string.digits
+        while True:
+            code = ''.join(random.choices(characters, k=6))
+            if not CustomUser.objects.filter(promo_code=code).exists():
+                return code
+
+    def create_user(self, roblox_nick, roblox_user_id, avatar_url=None, password=None, **extra_fields):
+        if not roblox_nick:
+            raise ValueError("The roblox_nick field must be set")
+        if not roblox_user_id:
+            raise ValueError("The roblox_user_id field must be set")
+
+        user = self.model(
+            roblox_nick=roblox_nick,
+            roblox_user_id=roblox_user_id,
+            avatar_url=avatar_url or "https://example.com/default-avatar.png",
+            **extra_fields
+        )
+        if password:
+            user.set_password(password)
+        else:
+            user.set_unusable_password()
+        user.save(using=self._db)
+        if not user.promo_code:
+            user.promo_code = self.generate_promo_code()
+            user.save()
+        return user
+
+    def create_superuser(self, roblox_nick, roblox_user_id, password=None, **extra_fields):
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Superuser must have is_staff=True.")
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser must have is_superuser=True.")
+        return self.create_user(roblox_nick, roblox_user_id, password=password, **extra_fields)
+
+
+class CustomUser(AbstractBaseUser, PermissionsMixin):
+    roblox_nick = models.CharField(max_length=150, unique=True)
+    roblox_user_id = models.BigIntegerField(unique=True)
+    avatar_url = models.URLField(blank=True, null=True)
+    promo_code = models.CharField(max_length=6, unique=True, blank=True, null=True)
+    bonus_balance = models.FloatField(default=0.0)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = 'roblox_nick'
+    REQUIRED_FIELDS = ['roblox_user_id']
+
+    def __str__(self):
+        return self.roblox_nick
+
+
+class Purchase(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    robux_amount = models.IntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    gamepass_id = models.CharField(max_length=100, blank=True, null=True)
+    place_id = models.CharField(max_length=50, blank=True, null=True)
+    status = models.CharField(max_length=20, default='pending')
+    promo_code_used = models.CharField(max_length=6, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    crypto_address = models.CharField(max_length=42, blank=True, null=True)
+    crypto_amount = models.DecimalField(max_digits=18, decimal_places=8, blank=True, null=True)
+    tx_hash = models.CharField(max_length=66, blank=True, null=True)
+
+    def __str__(self):
+        return f"Purchase {self.id} by {self.user.roblox_nick}"
+
+
+class Withdrawal(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    amount = models.FloatField(default=0.0)
+    gamepass_id = models.CharField(max_length=100, blank=True, null=True)
+    status = models.CharField(max_length=20, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Withdrawal {self.id} by {self.user.roblox_nick}"

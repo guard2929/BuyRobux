@@ -1,0 +1,60 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройка Game Pass</title>
+    <link rel="stylesheet" href="{% static 'core/style1.css' %}">
+</head>
+<body>
+<div class="center-content">
+    <div class="content-block active">
+        <div class="choose-col">
+            <h1>Настройка Game Pass</h1>
+            {% if error %}
+                <p style="color: red;">{{ error }}</p>
+                <a href="{% url 'core:buy_step2' %}" class="activate-btn-custom">Вернуться</a>
+            {% else %}
+                <p>Выберите существующий Game Pass или создайте новый.</p>
+                <p>Вы выбрали: {{ robux|default:"Не указано" }} Robux за {{ price|default:"Не указано" }}$</p>
+                <p>Плейс: {{ place_name|default:"Не указано" }} (ID: {{ place_id|default:"Не указано" }})</p>
+                <p>Рекомендуемая цена Game Pass: {{ gamepass_price|default:"Не указано" }} Robux</p>
+                <pre>{{ instruction|default:"Инструкция не предоставлена" }}</pre>
+
+                <form method="POST" action="{% url 'core:buy_step3' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="robux_amount" value="{{ robux|default:'0' }}">
+                    <input type="hidden" name="price" value="{{ price|default:'0' }}">
+                    <input type="hidden" name="place_id" value="{{ place_id|default:'' }}">
+                    <input type="hidden" name="place_name" value="{{ place_name|default:'' }}">
+                    <input type="hidden" name="purchase_id" value="{{ purchase_id|default:'' }}">
+                    <input type="hidden" name="promo_code" value="{{ promo_code|default:'' }}">
+
+                    <label for="place_link">Ссылка на плейс (с ID):</label>
+                    <input type="text" name="place_link" value="{{ place_link|default:'' }}" class="code-input"
+                           placeholder="Введите ссылку на плейс">
+
+                    <label for="gamepass_id">Выберите Game Pass:</label>
+                    <select name="gamepass_id" class="code-input">
+                        <option value="">Выберите Game Pass</option>
+                        {% for gp in gamepasses %}
+                            <option value="{{ gp.id }}">{{ gp.name }} ({{ gp.price }} R$)</option>
+                        {% endfor %}
+                    </select>
+
+                    <button type="submit" name="action" value="check" class="activate-btn-custom">Проверить</button>
+                    {% if universe_id and gamepasses and selected_gamepass_id %}
+                        <button type="submit" formaction="{% url 'core:buy_confirm' %}" class="activate-btn-custom">
+                            Оплатить
+                        </button>
+                    {% endif %}
+                </form>
+                <a href="{% url 'core:buy_step2' %}" class="activate-btn-custom">Вернуться</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</body>
+</html>

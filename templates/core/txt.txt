@@ -1,0 +1,24 @@
+const nickInput = document.getElementById('id_roblox_nickname');
+    const avatarImg = document.getElementById('roblox-avatar');
+
+    nickInput.addEventListener('blur', async () => {
+      const nick = nickInput.value.trim();
+      if (!nick) {
+        avatarImg.style.display = 'none';
+        return;
+      }
+
+      try {
+        const response = await fetch(`/core/ajax/check_nickname/?nick=${encodeURIComponent(nick)}`);
+        if (!response.ok) throw new Error('Network error');
+        const data = await response.json();
+        if (data.valid) {
+          avatarImg.src = data.avatar_url;
+          avatarImg.style.display = 'block';
+        } else {
+          avatarImg.style.display = 'none';
+        }
+      } catch (e) {
+        avatarImg.style.display = 'none';
+      }
+    });

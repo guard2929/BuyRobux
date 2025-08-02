@@ -1,0 +1,244 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вывод бонусов</title>
+    <style>
+        :root {
+            --primary-color: #5865F2;
+            --secondary-color: #EB459E;
+            --text-color: #2E3338;
+            --light-gray: #F2F4F4;
+            --white: #FFFFFF;
+            --error-color: #F04747;
+            --success-color: #2DCE89;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --button-gradient: linear-gradient(90deg, #a1c4fd, #f8c3d0, #ffdd9a);
+            --input-border: 1px solid #E0E2E5;
+        }
+
+        * {
+            font-family: 'Inter', Arial, -apple-system, BlinkMacSystemFont, sans-serif;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            line-height: 1.5;
+        }
+
+        .center-content {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .content-block {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            box-shadow: var(--box-shadow);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 24px;
+            color: var(--text-color);
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        p {
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .highlight {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        pre {
+            background-color: var(--light-gray);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            white-space: pre-wrap;
+            font-size: 14px;
+            margin: 20px 0;
+            line-height: 1.4;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-top: 10px;
+        }
+
+        .code-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: var(--input-border);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: var(--white);
+        }
+
+        .code-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.1);
+        }
+
+        select {
+            width: 100%;
+            padding: 14px 16px;
+            border: var(--input-border);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            background-color: var(--white);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.1);
+        }
+
+        .activate-btn {
+            background: var(--button-gradient);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        .activate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(161, 196, 253, 0.3);
+        }
+
+        .activate-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-button {
+            display: inline-block;
+            background: var(--button-gradient);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(161, 196, 253, 0.3);
+            text-decoration: none;
+        }
+
+        ul {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .content-block {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="center-content">
+    <div class="content-block active">
+        <div class="login-col">
+            <h1>Вывод бонусов</h1>
+            {% if error %}
+                <p class="error-message">{{ error }}</p>
+                <a href="{% url 'core:withdraw_step2' %}" class="login-button">Вернуться</a>
+            {% else %}
+                <p>Доступно для вывода: <span class="highlight">{{ bonus_balance|default:"Не указано" }} Robux</span>
+                </p>
+                <p>Плейс: <span class="highlight">{{ place_name|default:"Не указано" }}</span>
+                    (ID: {{ place_id|default:"Не указано" }})</p>
+                <p>Рекомендуемая цена Game Pass: <span
+                        class="highlight">{{ requested_price|default:"Не указано" }} Robux</span></p>
+
+                <pre>{{ instruction|default:"Инструкция не предоставлена" }}</pre>
+
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <input type="hidden" name="bonus_balance" value="{{ bonus_balance|default:'' }}">
+                    <input type="hidden" name="place_id" value="{{ place_id|default:'' }}">
+
+                    <label for="place_link">Ссылка на плейс (с ID):</label>
+                    <input type="text" id="place_link" name="place_link" value="{{ place_link|default:'' }}" required
+                           class="code-input">
+
+                    <label for="gamepass_id">Выберите Game Pass:</label>
+                    <select name="gamepass_id" id="gamepass_id" class="code-input">
+                        <option value="">Выберите Game Pass</option>
+                        {% for gp in gamepasses %}
+                            <option value="{{ gp.id }}">{{ gp.name }} ({{ gp.price }} R$)</option>
+                        {% endfor %}
+                    </select>
+
+                    <button type="submit" name="action" value="check" class="activate-btn">Проверить</button>
+                    <button type="submit" name="action" value="confirm" formaction="{% url 'core:withdraw_confirm' %}"
+                            class="activate-btn">Подтвердить
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</body>
+</html>

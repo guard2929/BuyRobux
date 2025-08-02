@@ -1,0 +1,18 @@
+from django.urls import path
+from . import views
+
+app_name = 'core'
+urlpatterns = [
+    path('', views.index, name='index'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('buy/step2/', views.buy_robux_step2, name='buy_step2'),
+    path('buy/step3/', views.buy_robux_step3, name='buy_step3'),
+    path('buy/crypto/', views.buy_robux_crypto, name='buy_crypto'),  # Новый маршрут
+    path('withdraw/', views.withdraw_bonus, name='withdraw'),
+    path('withdraw/step2/', views.withdraw_step2, name='withdraw_step2'),
+    path('withdraw/step3/', views.withdraw_step3, name='withdraw_step3'),
+    path('withdraw/confirm/', views.withdraw_confirm, name='withdraw_confirm'),
+    path('social-bonus/<str:social>/', views.social_bonus, name='social_bonus'),
+    path('activate-promo/', views.activate_promo, name='activate_promo'),
+]

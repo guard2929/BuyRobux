@@ -1,0 +1,509 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+</head>
+<body>
+    <div class="all">
+        <div class="left-menu">
+            <div class="top-left-menu">
+                <img src="{% static 'media/logo-v2.png' %}" width="200px" alt="" class="logo">
+                <div class="menu">
+                    <span class="span-menu-center active" data-target="buy-robux">
+                        <img src="{% static 'media/menu-top1.png' %}" data-en="Buy robux" data-ru="Купить робуксы">Купить робуксы
+                    </span>
+                    <span class="span-menu-center" data-target="free">
+                        <img src="{% static 'media/menu-top2.png' %}" data-en="Free" data-ru="Бесплатно">Бесплатно
+                    </span>
+                    <span class="span-menu-center" data-target="rozigrish">
+                        <img src="{% static 'media/giveaway-icon.png' %}" data-en="Raffle" data-ru="Розыгрыш">Розыгрыш
+                    </span>
+                </div>
+            </div>
+            <div class="change-theme">
+                <h3 class="lang" data-en="Change language" data-ru="Сменить язык">Сменить язык</h3>
+                <label class="toggle-container">
+                    <input type="checkbox" class="toggle-input" id="languageToggle">
+                    <span class="toggle-slider">
+                        <span class="toggle-icons">
+                            <span class="en-icon">EN</span>
+                            <span class="ru-icon">RU</span>
+                        </span>
+                    </span>
+                </label>
+            </div>
+        </div>
+
+        <div class="mobile-menu" id="mobileMenu">
+            <div class="mobile-menu-header">
+                <img src="{% static 'media/logo-v2.png' %}" width="200px" alt="" class="logo">
+                <span class="close-menu" id="closeMenu">×</span>
+            </div>
+            <div class="mobile-menu-content">
+                <div class="menu">
+                    <span class="span-menu-center active" data-target="buy-robux" data-ru="Купить робуксы" data-en="buy-robux">
+                        <img src="{% static 'media/menu-top1.png' %}" data-en="Buy robux" data-ru="Купить робуксы">Купить робуксы
+                    </span>
+                    <span class="span-menu-center" data-target="free">
+                        <img src="{% static 'media/menu-top2.png' %}" data-en="Free" data-ru="Бесплатно">Бесплатно
+                    </span>
+                    <span class="span-menu-center" data-target="rozigrish">
+                        <img src="{% static 'media/menu-top3.png' %}" data-en="Raffle" data-ru="Розыгрыш">Розыгрыш
+                    </span>
+                </div>
+                <div class="change-theme">
+                    <h3 class="lang" data-en="Change language" data-ru="Сменить язык">Сменить язык</h3>
+                    <label class="toggle-container">
+                        <input type="checkbox" class="toggle-input" id="mobileLanguageToggle">
+                        <span class="toggle-slider">
+                            <span class="toggle-icons">
+                                <span class="en-icon">EN</span>
+                                <span class="ru-icon">RU</span>
+                            </span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="center-content">
+            <div class="center-top-content">
+                <img class="top-content-img" src="{% static 'media/logo-v2.png' %}" alt="">
+                <div class="uniqu-div">
+                    <div class="social">
+                        <a href="#"><img src="{% static 'media/wk.png' %}" alt=""></a>
+                        <a href="#"><img src="{% static 'media/discord.png' %}" alt=""></a>
+                        <a href="#"><img src="{% static 'media/telegram.png' %}" alt=""></a>
+                    </div>
+                    <a href="" class="login-button lang" data-en="Log in" data-ru="Войти">Войти</a>
+                    <a><img src="{% static 'media/menu-hamburger.png' %}" width="35px" height="35px" class="hamburger-menu" id="hamburgerMenu" alt=""></a>
+                </div>
+            </div>
+            <div class="content-block active" id="buy-robux">
+                <a href="#" data-target="buy-robux" class="banner-free-roblox">
+                    <div class="banner-free-roblox">
+                        <h1 class="lang" data-en="Get free Robux!" data-ru="Получите бесплатные робуксы!">Получите бесплатные робуксы!</h1>
+                        <p class="lang" data-en="You can get them by completing simple tasks. For example, by subscribing to our Telegram!" data-ru="Вы можете получить их, выполняя простые задания. Например, подписавшись на наш телеграм!">Вы можете получить их, выполняя простые задания. Например, подписавшись на наш телеграм!</p>
+                    </div>
+                </a>
+                <div class="choose-col">
+                    <div class="strelka-top">
+                        <img src="{% static 'media/skrelka-top-left.png' %}" width="25px" height="25px" alt="">
+                        <img src="{% static 'media/skrelka-top-right.png' %}" width="25px" height="25px" alt="">
+                    </div>
+                    <div class="top-comments">
+                        <p class="top-comment lang" data-en="Best Robux rate" data-ru="Лучший курс робуксов">Лучший курс робуксов</p>
+                        <p style="color: rgb(141, 0, 208);"><span><span class="lang" data-en="Instant delivery available" data-ru="Доступна моментальная доставка">Доступна моментальная доставка</span></span></p>
+                    </div>
+                    <div id="result">15.38 ₽ <span style="color: grey;">=</span> 20 R$</div>
+                    <div class="slider-container">
+                        <input type="range" id="slider" min="0" max="249" value="0">
+                    </div>
+                    <button class="activate-btn-custom lang" data-en="Buy" data-ru="Купить">Купить</button>
+                    <div class="strelka-bottom" style="padding-bottom: 10px;">
+                        <img src="{% static 'media/strelka-bottom-left.png' %}" width="25px" alt="">
+                        <img src="{% static 'media/skrelka-small.png' %}" width="25px" alt="">
+                    </div>
+                </div>
+
+                <div class="user-message">
+                    <img src="{% static 'media/img-teller.png' %}" alt="User avatar" class="avatar">
+                    <div class="message-bubble">
+                        <h3 style="color: black; margin-left: 5px;" class="lang" data-en="Buy Robux cheaper than anywhere else" data-ru="Покупай робуксы дешевле, чем где-либо">Покупай робуксы дешевле, чем где-либо</h3>
+                        <p style="color: gray; margin-left: 5px; padding-right: 40px;" class="lang" data-en="Best market rate, instant Robux delivery after payment, and 24/7 site operation" data-ru="Лучший курс на рынке, моментальная отправка робуксов после оплаты и круглосуточная работа сайта">Лучший курс на рынке, моментальная отправка робуксов после оплаты и круглосуточная работа сайта</p>
+                    </div>
+                </div>
+
+                <div class="why-we">
+                    <div class="strelka-top" style="padding-top: 5px;"><!--Здесь добавил: style="padding-top: 5px;"-->
+                        <img src="{% static 'media/skrelka-top-left.png' %}" width="25px" height="25px" alt="">
+                        <img src="{% static 'media/skrelka-top-right.png' %}" width="25px" height="25px" alt="">
+                    </div>
+                    <h1 class="lang" data-en="Why choose us?" data-ru="Почему мы?">Почему мы?</h1>
+                    <div class="block-we">
+                        <div class="obes">
+                            <img src="{% static 'media/kyrs-icon.png' %}" alt="">
+                            <h2 class="lang" data-en="0.016 $ = 1 R$" data-ru="1,3 ₽ = 1 R$">1,3 ₽ = 1 R$</h2>
+                            <p class="lang" data-en="Best purchase rate among all platforms" data-ru="Лучший курс покупки среди всех площадок">Лучший курс покупки среди всех площадок</p>
+                        </div>
+                        <div class="hr-imm"></div>
+                        <div class="obes">
+                            <img src="{% static 'media/shield.png' %}" alt="">
+                            <h2 class="lang" data-en="Trusted" data-ru="Проверенно">Проверенно</h2>
+                            <p class="lang" data-en="24/7 support always ready to help" data-ru="Круглосуточная поддержка, которая всегда готова помочь">Круглосуточная поддержка, которая всегда готова помочь</p>
+                        </div>
+                        <div class="hr-imm"></div>
+                        <div class="obes">
+                            <img src="{% static 'media/speed-icon.png' %}" alt="">
+                            <h2>~ 5 min</h2>
+                            <p class="lang" data-en="We start transferring Robux shortly after purchase" data-ru="Мы начнем трансфер робуксов вскоре после покупки">Мы начнем трансфер робуксов вскоре после покупки</p>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="strelka-bottom" style="padding-bottom: 15px;"><!--Здесь добавил: style="padding-bottom: 15px;""-->
+                        <img src="{% static 'media/strelka-bottom-left.png' %}" width="25px" alt="">
+                        <img src="{% static 'media/skrelka-small.png'%}" width="25px" alt="">
+                    </div>
+                </div>
+
+                <div class="promo-and-list promo-and-list-inline">
+                    <div class="promo-block">
+                        <h2 class="lang" style="margin-bottom: 30px;" data-en="Promo code" data-ru="Промокод">Промокод</h2>
+                        <input type="text" class="code-input lang" placeholder="Введите код..." data-en="Enter code..." data-ru="Введите код...">
+                        <button class="activate-btn lang" disabled data-en="Activate" data-ru="Активировать">Активировать</button>
+                        <div class="no-code">
+                            <p class="lang" data-en="No promo code?" data-ru="Нет промокода?">Нет промокода?</p>
+                            <p class="lang" data-en="Subscribe to our VK group and Discord community, where we regularly give away promo codes for free Robux!" data-ru="Подпишись на нашу группу ВКонтакте и сообщество Discord, где мы регулярно проводим раздачу промокодов на бесплатные робуксы!">Подпишись на нашу группу ВКонтакте и сообщество Discord, где мы регулярно проводим раздачу промокодов на бесплатные робуксы!</p>
+                            <div class="social-buttons">
+                                <a href="#" class="social-btn vk lang" data-en="VK" data-ru="VK">VK <span>→</span></a>
+                                <a href="#" class="social-btn telegram lang" data-en="Telegram" data-ru="Telegram">Telegram <span>→</span></a>
+                                <a href="#" class="social-btn discord lang" data-en="Discord" data-ru="Discord">Discord <span>→</span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="last-buyers">
+                        <h2 class="lang" data-en="Recent purchases" data-ru="Последние покупки">Последние покупки</h2>
+                        <div class="flex-settings">
+                            <div class="last-buyer">
+                                <img src="{% static 'media/user-icon.png' %}" alt="">
+                                <div class="right-buyer-info">
+                                    <p class="nickname">ZaRoot1</p>
+                                    <p class="robux-col">55 R$</p>
+                                </div>
+                            </div>
+                            <div class="last-buyer">
+                                <img src="{% static 'media/user-icon.png' %}" alt="">
+                                <div class="right-buyer-info">
+                                    <p class="nickname">ZaRoot1dsfdsfsd</p>
+                                    <p class="robux-col">55 R$</p>
+                                </div>
+                            </div>
+                            <div class="last-buyer">
+                                <img src="{% static 'media/user-icon.png' %}" alt="">
+                                <div class="right-buyer-info">
+                                    <p class="nickname">ZaRoot1</p>
+                                    <p class="robux-col" id="robux-col">55 R$</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-most-important">
+                    <div class="strelka-top">
+                        <img src="{% static 'media/skrelka-top-left.png' %}" width="25px" height="25px" alt="">
+                        <img src="{% static 'media/skrelka-top-right.png' %}" width="25px" height="25px" alt="">
+                    </div>
+                    <h1 class="lang" data-en="Frequently Asked Questions" data-ru="Часто задаваемые вопросы">Часто задаваемые вопросы</h1>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <h2 class="lang" data-en="How do I purchase Robux?" data-ru="Как купить робуксы?">Как купить робуксы?</h2>
+                            <p class="lang" data-en="Select the amount using the slider in the 'Buy Robux' section, then click 'Buy' to proceed with payment." data-ru="Выберите сумму с помощью ползунка в разделе 'Купить робуксы', затем нажмите 'Купить' для оплаты.">Выберите сумму с помощью ползунка в разделе 'Купить робуксы', затем нажмите 'Купить' для оплаты.</p>
+                        </div>
+                        <div class="hr-immT"></div>
+                        <div class="faq-item">
+                            <h2 class="lang" data-en="How long does delivery take?" data-ru="Сколько времени занимает доставка?">Сколько времени занимает доставка?</h2>
+                            <p class="lang" data-en="Robux delivery typically starts within 5 minutes after payment confirmation." data-ru="Доставка робуксов обычно начинается в течение 5 минут после подтверждения оплаты.">Доставка робуксов обычно начинается в течение 5 минут после подтверждения оплаты.</p>
+                        </div>
+                        <div class="hr-immT"></div>
+                        <div class="faq-item">
+                            <h2 class="lang" data-en="How can I get free Robux?" data-ru="Как получить бесплатные робуксы?">Как получить бесплатные робуксы?</h2>
+                            <p class="lang" data-en="Complete simple tasks like subscribing to our Telegram or participating in raffles to earn free Robux." data-ru="Выполняйте простые задания, такие как подписка на наш Telegram или участие в розыгрышах, чтобы получить бесплатные робуксы.">Выполняйте простые задания, такие как подписка на наш Telegram или участие в розыгрышах, чтобы получить бесплатные робуксы.</p>
+                        </div>
+                    </div>
+                    <div class="strelka-bottom" style="padding-bottom: 10px;">
+                        <img src="{% static 'media/strelka-bottom-left.png' %}" width="25px" alt="">
+                        <img src="{% static 'media/skrelka-small.png' %}" width="25px" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="content-block" id="free">
+                <!--Тут весь раздел bobus-bal-block -->
+                <div class="bobus-bal-block">
+                   <div class="strelka-top" style="margin-top: 5px;">
+                        <img src="{% static 'media/skrelka-top-left.png' %}" width="25px" height="25px" alt="">
+                        <img src="{% static 'media/skrelka-top-right.png' %}" width="25px" height="25px" alt="">
+                    </div>
+                    <h1 class="lang" data-en="Your bonus balance:" data-ru="Ваш бонусный баланс:">Ваш бонусный баланс:</h1>
+                    <p class="bobus-bal-block-p lang" data-ru="Бесплатные робуксы полученные за приглашение друзей и выполнение заданий" data-en="Free Robux Earned for Inviting Friends and Completing Tasks">Бесплатные робуксы полученные за приглашение друзей и выполнение заданий</p>
+                    <div class="bonus-inside-content">
+                        <div class="bonus-and-img">
+                            <p data-ru="Доступно к выводу:" data-en="Available for withdrawal:">Доступно к выводу:</p>
+                            <h2 style="filter: blur(2px);">0R$</h2>
+                            <a href="#" data-en="withdraw" data-ru="Вывести" class="button-withdraw-bonus">Вывести</a>
+                        </div>
+                        <img src="{% static 'media/robux-more.png' %}" width="250px" alt="">
+                    </div>
+                    <div class="strelka-bottom" style="margin-bottom: 15px;">
+                        <img src="{% static 'media/strelka-bottom-left.png' %}" width="25px" alt="">
+                        <img src="{% static 'media/skrelka-small.png' %}" width="25px" alt="">
+                    </div>
+                </div>
+                <div class="task-block">
+                   <div class="strelka-top" style="padding-top: 5px;">
+                        <img src="{% static 'media/skrelka-top-left.png' %}" width="25px" height="25px" alt="">
+                        <img src="{% static 'media/skrelka-top-right.png' %}" width="25px" height="25px" alt="">
+                    </div>
+                    <h1 style="text-align: center;" class="lang" data-ru="Задания" data-en="Tasks">Задания</h1>
+                    <p class="bobus-bal-block-p lang" data-en="Free Robux for completing tasks" data-ru="Бесплатные робуксы за выполнение заданий">Бесплатные робуксы за выполнение заданий</p>
+                    <div class="block-flex-task">
+                        <div class="block-task-flex" style="filter: blur(2px);">
+                            <div class="thee-elem">
+                                <p>Подпишитесь на</p>
+                                <a href="#">Группу ВК <span></span></a>
+                                <button class="im-subscribe">Я подписался</button>
+                            </div>
+                            <h2>+5R$</h2>
+                        </div>
+                        <div class="block-task-flex" style="filter: blur(2px);">
+                            <div class="thee-elem">
+                                <p>Подпишитесь на</p>
+                                <a href="#">Группу ВК <span></span></a>
+                                <button class="im-subscribe">Я подписался</button>
+                            </div>
+                            <h2>+5R$</h2>
+                        </div>
+                        <div class="block-task-flex" style="filter: blur(2px);">
+                            <div class="thee-elem">
+                                <p>Подпишитесь на</p>
+                                <a href="#">Группу ВК <span></span></a>
+                                <button class="im-subscribe">Я подписался</button>
+                            </div>
+                            <h2>+5R$</h2>
+                        </div>
+                    </div>
+                    <div class="strelka-bottom" style="padding-bottom: 15px;">
+                        <img src="{% static 'media/strelka-bottom-left.png' %}" width="25px" alt="">
+                        <img src="{% static 'media/skrelka-small.png' %}" width="25px" alt="">
+                    </div>
+                </div>
+                <div class="friend-adds-block">
+                    <div class="strelka-top" style="padding-top: 5px;">
+                        <img src="{% static 'media/skrelka-top-left.png' %}" width="25px" height="25px" alt="">
+                        <img src="{% static 'media/skrelka-top-right.png' %}" width="25px" height="25px" alt="">
+                    </div>
+                    <h1 class="add-friends-h1">Приглашай друзей</h1>
+                    <p class="add-friends-p">Получай награды, а они получат бонус к первой покупке.</p>
+                    <div class="flex-friend-pol">
+                        <div class="ti-polych">
+                            <p>Ты получишь:</p>
+                            <div class="friend-blur-block-first" style="filter: blur(2px);">
+                                <div class="friend-blur-left">
+                                    <h2>10R$</h2>
+                                    <p>С первой покупки друга</p>
+                                </div>
+                                <img src="{% static 'media/friend.png' %}" alt="">
+                            </div>
+                        </div>
+                        <div class="ti-polych">
+                            <p>Друг получит:</p>
+                            <div class="friend-blur-block-first" style="filter: blur(2px);">
+                                <div class="friend-blur-left">
+                                    <h2>10R$</h2>
+                                    <p>К первой покупке</p>
+                                </div>
+                                <img src="{% static 'media/gift-friend-block.png' %}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="center-div">
+                        <div class="your-promo">
+                            <p>Твой промокод для приглашения</p>
+                            <div class="flex-colunm-code" style="filter: blur(2px);"><!--Если залогинен то без style="filter: blur(2px);" -->
+                                <div>
+                                    <h2>PROMOCODE</h2><!--Если залогинен то Вместо "PROMOCODE" пиши ник игрока капсом например мой ник VladTurba01 значит промокод: "VLADTURBA01"-->
+                                    <p>Друзья, не использовавшие твой промокод при первой покупке, не будут засчитаны системой</p>
+                                </div>
+                                <button class="share-code">Поделиться</button>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="color: grey; width: calc(100% - 30px); text-align: center;margin-left: 15px;">Полученные робуксы будут зачислены на твой бонусный баланс</p>
+                    <div class="statistic">
+                        <p style="text-align: center; padding-top: 40px;">Статистика</p>
+                        <div class="statistic-block">
+                            <div class="friend-blur-block-first" style="filter: blur(2px);">
+                                <div class="friend-blur-left">
+                                    <h2>0</h2>
+                                    <p>Друзей прилашено</p>
+                                </div>
+                                <img src="{% static 'media/add-person.png' %}" alt="">
+                            </div>
+                            <div class="friend-blur-block-first" style="filter: blur(2px);">
+                                <div class="friend-blur-left">
+                                    <h2>0R$</h2>
+                                    <p>Бонусами получено</p>
+                                </div>
+                                <img src="{% static 'media/earn-money.png' %}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="strelka-bottom" style="padding-bottom: 15px;">
+                        <img src="{% static 'media/strelka-bottom-left.png' %}" width="25px" alt="">
+                        <img src="{% static 'media/skrelka-small.png' %}" width="25px" alt="">
+                    </div>
+                </div>
+                <!--Тут весь раздел bobus-bal-block закончился -->
+            </div>
+            <div class="content-block" id="rozigrish">
+                <div class="about-roz">
+                    <div class="strelka-top">
+                        <img src="{% static 'media/skrelka-top-left.png' %}" width="25px" height="25px" alt="">
+                        <img src="{% static 'media/skrelka-top-right.png' %}" width="25px" height="25px" alt="">
+                    </div>
+                    <div class="center-about-roz">
+                        <div>
+                            <h1>Розыгрыш на 200.000 Робуксов!</h1>
+                            <p>Присоединяйтесь к нашему захватывающему конкурсу и станьте одним из 200 победителей!</p>
+                        </div>
+                        <img src="{% static 'media/robux-roz-200k.png' %}" alt="">
+                    </div>
+                    <div class="strelka-bottom" style="padding-bottom: 10px;">
+                        <img src="{% static 'media/strelka-bottom-left.png' %}" width="25px" alt="">
+                        <img src="{% static 'media/skrelka-small.png' %}" width="25px" alt="">
+                    </div>
+                </div>
+                <div class="win-gifts">
+                    <div class="strelka-top">
+                        <img src="{% static 'media/skrelka-top-left.png' %}" width="25px" height="25px" alt="">
+                        <img src="{% static 'media/skrelka-top-right.png' %}" width="25px" height="25px" alt="">
+                    </div>
+                    <h1>Призы для участников</h1>
+                    <div class="win-about">
+                        <div class="block-win-ab">
+                            <img src="{% static 'media/money-3d.png' %}" alt="">
+                            <h2>200,000 R$</h2>
+                            <p>Общая сумма</p>
+                        </div>
+                        <div class="hr-type"></div>
+                        <div class="block-win-ab">
+                            <img src="{% static 'media/winner-main.png' %}" alt="">
+                            <h2>200</h2>
+                            <p>Победителей</p>
+                        </div>
+                        <div class="hr-type"></div>
+                        <div class="block-win-ab">
+                            <img src="{% static 'media/winner-icon.png' %}" alt="">
+                            <h2>1,000 R$</h2>
+                            <p>Получит победитель</p>
+                        </div>
+                    </div>
+                    <div class="strelka-bottom" style="padding-bottom: 10px;">
+                        <img src="{% static 'media/strelka-bottom-left.png' %}" width="25px" alt="">
+                        <img src="{% static 'media/skrelka-small.png' %}" width="25px" alt="">
+                    </div>
+                </div>
+                <div class="ysl-roz">
+                    <h1>Условия участия</h1>
+                    <p>Вы можете получить 10 билетов для участия</p>
+                    <div class="three-blocks-ticket">
+                        <div class="ticket-plus">
+                            <div class="left-base-content">
+                                <p>Подписаться на соц. сети</p>
+                                <div class="social-ticket">
+                                    <a href="" style="width: 100px;"><img src="{% static 'media/telegram-purple.png' %}" alt="">Telegram</a>
+                                    <a href="" style="width: 70px;"><img src="{% static 'media/wk-purple.png' %}" alt="">VK</a>
+                                    <a href="" style="width: 100px;"><img src="{% static 'media/discord-purple.png' %}" alt="">Discord</a>
+                                </div>
+                            </div>
+                            <span>+1 <img src="" alt=""></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-most-important">
+                    <div class="strelka-top">
+                        <img src="{% static 'media/skrelka-top-left.png' %}" width="25px" height="25px" alt="">
+                        <img src="{% static 'media/skrelka-top-right.png' %}" width="25px" height="25px" alt="">
+                    </div>
+                    <h1 class="lang" data-en="Frequently Asked Questions" data-ru="Еще остались вопросы?">Еще остались вопросы?</h1>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <h2 class="lang" data-en="How do I purchase Robux?" data-ru="Как купить робуксы?">Как принять участие в розыгрыше?</h2>
+                            <p class="lang" data-en="Select the amount using the slider in the 'Buy Robux' section, then click 'Buy' to proceed with payment." data-ru="Выберите сумму с помощью ползунка в разделе 'Купить робуксы', затем нажмите 'Купить' для оплаты.">За выполнение условий даются билеты для участия. Всего можно получить 10 билетов. Выполните хотя бы 1 условие, чтобы принять участие в розыгрыше.</p>
+                        </div>
+                        <div class="hr-immT"></div>
+                        <div class="faq-item">
+                            <h2 class="lang" data-en="How long does delivery take?" data-ru="Сколько времени занимает доставка?">Как увеличить шансы?</h2>
+                            <p class="lang" data-en="Robux delivery typically starts within 5 minutes after payment confirmation." data-ru="Доставка робуксов обычно начинается в течение 5 минут после подтверждения оплаты.">Чем больше условий выполните, тем больше билетов получите. Если у вас 1 билет, а у друга 5 билетов – у него шансы на победу в 5 раз больше. Расскажите другу о розыгрыше, чтобы повысить ваши шансы на победу.</p>
+                        </div>
+                        <div class="hr-immT"></div>
+                        <div class="faq-item">
+                            <h2 class="lang" data-en="How can I get free Robux?" data-ru="Как получить бесплатные робуксы?">Как получить приз?</h2>
+                            <p class="lang" data-en="Complete simple tasks like subscribing to our Telegram or participating in raffles to earn free Robux." data-ru="Выполняйте простые задания, такие как подписка на наш Telegram или участие в розыгрышах, чтобы получить бесплатные робуксы.">Мы автоматически выберем 200 победителей и вручим призы на бонусный баланс сайта, чтобы их вывести нужно нажать «Вывести» на странице «Бесплатно»</p>
+                        </div>
+                    </div>
+                    <div class="strelka-bottom" style="padding-bottom: 10px;">
+                        <img src="{% static 'media/strelka-bottom-left.png' %}" width="25px" alt="">
+                        <img src="{% static 'media/skrelka-small.png' %}" width="25px" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="promo-and-list promo-and-list-fixed">
+            <div class="promo-block">
+                <h2 class="lang" style="margin-bottom: 30px;" data-en="Promo code" data-ru="Промокод">Промокод</h2>
+                <input type="text" class="code-input lang" placeholder="Введите код..." data-en="Enter code..." data-ru="Введите код...">
+                <button class="activate-btn lang" disabled data-en="Activate" data-ru="Активировать">Активировать</button>
+                <div class="no-code">
+                    <p class="lang" data-en="No promo code?" data-ru="Нет промокода?">Нет промокода?</p>
+                    <p class="lang" data-en="Subscribe to our VK group and Discord community, where we regularly give away promo codes for free Robux!" data-ru="Подпишись на нашу группу ВКонтакте и сообщество Discord, где мы регулярно проводим раздачу промокодов на бесплатные робуксы!">Подпишись на нашу группу ВКонтакте и сообщество Discord, где мы регулярно проводим раздачу промокодов на бесплатные робуксы!</p>
+                    <div class="social-buttons">
+                        <a href="#" class="social-btn vk lang" data-en="VK" data-ru="VK">VK <span>→</span></a>
+                        <a href="#" class="social-btn telegram lang" data-en="Telegram" data-ru="Telegram">Telegram <span>→</span></a>
+                        <a href="#" class="social-btn discord lang" data-en="Discord" data-ru="Discord">Discord <span>→</span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="last-buyers">
+                <h2 class="lang" data-en="Recent purchases" data-ru="Последние покупки">Последние покупки</h2>
+                <div class="flex-settings">
+                    <div class="last-buyer">
+                        <img src="{% static 'media/user-icon.png' %}" alt="">
+                        <div class="right-buyer-info">
+                            <p class="nickname">ZaRoot1dasasd</p>
+                            <p class="robux-col">55 R$</p>
+                        </div>
+                    </div>
+                    <div class="last-buyer">
+                        <img src="{% static 'media/user-icon.png' %}" alt="">
+                        <div class="right-buyer-info">
+                            <p class="nickname">ZaRoot1</p>
+                            <p class="robux-col">55 R$</p>
+                        </div>
+                    </div>
+                    <div class="last-buyer">
+                        <img src="{% static 'media/user-icon.png' %}" alt="">
+                        <div class="right-buyer-info">
+                            <p class="nickname">ZaRoot1</p>
+                            <p class="robux-col" id="robux-col">55 R$</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <img class="footer-img" src="{% static 'media/logo-v2.png' %}" alt="">
+            <div class="footer-div">
+                <a href="#">
+                    <span>
+                        <p class="lang" data-en="Terms of Use" data-ru="Условия использования">Условия использования</p>
+                        <img src="{% static 'media/span-strelka.png' %}" class="len-prid-nazv" alt="">
+                    </span>
+                </a>
+                <a href="#">
+                    <span>
+                        <p class="lang" data-en="Privacy Policy" data-ru="Политика конфиденциальности">Политика конфиденциальности</p>
+                        <img src="{% static 'media/span-strelka.png' %}" class="len-prid-nazv" alt="">
+                    </span>
+                </a>
+            </div>
+        </footer>
+    </div>
+    <script src="{% static 'main.js' %}" defer></script>
+</body>
+</html>
