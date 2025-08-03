@@ -62,11 +62,11 @@
     <p>Game Pass ID: <span class="highlight">{{ purchase.gamepass_id }}</span></p>
     <p>Цена Game Pass: <span class="highlight">{{ purchase.gamepass_price }} Robux</span></p>
     <p>За это вы заплатите <span class="highlight">{{ purchase.price }} {{ purchase.currency|default:"RUB" }}</span></p>
-    <form method="post" action="{% url 'core:buy_finalize' purchase.id %}">
+    <form method="post" action="{% url 'core:confirm_purchase' purchase.id %}">
       {% csrf_token %}
       <button type="submit" class="btn">Подтвердить и завершить покупку</button>
     </form>
-    <a href="{% url 'core:buy_robux_step3' %}" class="btn" style="margin-top:16px; display:inline-block;">Назад</a>
+    <a href="{% url 'core:buy_step3' %}" class="btn" style="margin-top:16px; display:inline-block;">Назад</a>
   </div>
 </body>
 </html>

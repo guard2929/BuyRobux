@@ -153,7 +153,7 @@ def buy_robux_step3(request):
         promo_code_used=promo_code,
     )
 
-    gamepass_price = round(price_decimal / Decimal('0.505'))
+    gamepass_price = round(price_decimal / Decimal('0.7'))
 
     universe_id = get_universe_id(place_id)
     if not universe_id:
@@ -256,6 +256,8 @@ def buy_robux_step3(request):
             '6. Скопируйте ID Game Pass и выберите его здесь.'
         ),
     })
+
+
 @login_required
 @require_POST
 def buy_confirm(request):
@@ -359,18 +361,7 @@ def buy_confirm(request):
             except CustomUser.DoesNotExist:
                 pass
 
-        return render(request, 'core/confirm.html', {
-            'robux': purchase.robux_amount,
-            'price': float(purchase.price),
-            'gamepass_id': selected_gamepass_id,
-            'gamepass_price': purchase.gamepass_price,
-            'purchase_id': purchase.id,
-            'promo_code': purchase.promo_code_used,
-            'status': 'success',
-            'message': 'Покупка подтверждена.',
-            'place_id': place_id,
-            'place_name': purchase.place_name,
-        })
+        return redirect('core:confirm_purchase', purchase_id=purchase.id)
 
     except Purchase.DoesNotExist:
         return render(request, 'core/step3.html', {
@@ -391,6 +382,23 @@ def buy_confirm(request):
                 )
             ),
         })
+
+
+@login_required
+def confirm_purchase(request, purchase_id):
+    purchase = get_object_or_404(Purchase, id=purchase_id, user=request.user)
+    context = {
+        'purchase': purchase,
+        'robux': purchase.robux_amount,
+        'price': float(purchase.price),
+        'gamepass_id': purchase.gamepass_id,
+        'gamepass_price': purchase.gamepass_price,
+        'purchase_id': purchase.id,
+        'promo_code': purchase.promo_code_used,
+        'place_id': purchase.place_id,
+        'place_name': purchase.place_name,
+    }
+    return render(request, 'core/confirm.html', context)
 
 
 @login_required

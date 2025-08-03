@@ -15,4 +15,5 @@ urlpatterns = [
     path('withdraw_step2/', views.withdraw_step2, name='withdraw_step2'),
     path('withdraw_step3/', views.withdraw_step3, name='withdraw_step3'),
     path('withdraw_confirm/', views.withdraw_confirm, name='withdraw_confirm'),
+    path('buy/confirm/<int:purchase_id>/', views.confirm_purchase, name='confirm_purchase'),
 ]
