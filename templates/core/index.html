@@ -198,18 +198,25 @@
             </div>
 
             <div class="promo-and-list promo-and-list-inline">
+
                 <div class="promo-block">
-                    <h2 class="lang" style="margin-bottom: 30px;" data-en="Promo code" data-ru="Промокод">Промокод</h2>
+                    <h2>Промокод</h2>
                     {% if user.is_authenticated %}
                         <form method="post" action="{% url 'core:activate_promo' %}">
                             {% csrf_token %}
-                            <input type="text" name="promo_code" class="code-input" placeholder="Введите промокод">
-                            <button type="submit" class="activate-btn">Активировать</button>
+                            <input type="text" name="promo_code" placeholder="Введите промокод">
+                            <button type="submit">Активировать</button>
                         </form>
                     {% else %}
-                        <p>Пожалуйста, войдите, чтобы активировать промокод.</p>
+                        <p>Пожалуйста, <a href="{% url 'login' %}">войдите в систему</a>, чтобы активировать промокод.
+                        </p>
                     {% endif %}
+                    <div class="promo-info">
+                        <p>Общие промокоды дают бонусы сразу</p>
+                        <p>Дружеские промокоды дают бонусы при покупке</p>
+                    </div>
                 </div>
+
                 <div class="last-buyers">
                     <h2 class="lang" data-en="Recent purchases" data-ru="Последние покупки">Последние покупки</h2>
                     <div class="flex-settings">

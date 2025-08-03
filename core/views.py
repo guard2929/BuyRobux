@@ -25,7 +25,8 @@ from django.conf import settings
 from django.shortcuts import render, get_object_or_404
 from .models import Purchase, CustomUser
 from decimal import Decimal
-from .models import CurrencyRate
+from .models import CurrencyRate, PromoCode, PromoCodeActivation
+
 
 def index(request):
     context = {}
@@ -41,6 +42,47 @@ def index(request):
         context['invited_friends_count'] = 0
         context['bonus_earned'] = 0
     return render(request, 'core/index.html', context)
+
+
+@login_required
+@require_POST
+def activate_promo(request):
+    promo_code_value = request.POST.get('promo_code', '').strip().upper()
+
+    try:
+        promo = PromoCode.objects.get(code=promo_code_value, is_active=True)
+
+        # Проверка срока действия
+        if promo.valid_until and promo.valid_until < timezone.now():
+            return JsonResponse({'error': 'Срок действия промокода истек'}, status=400)
+
+        # Проверка предыдущей активации
+        if not request.user.can_activate_promo(promo):
+            return JsonResponse({'error': 'Вы уже активировали этот промокод'}, status=400)
+
+        # Активация промокода
+        if promo.promo_type == 'friend':
+            # Для дружеских промокодов - бонус при покупке
+            return JsonResponse({
+                'success': 'Промокод принят! Используйте его при покупке.'
+            })
+        else:
+            # Для общих промокодов - мгновенное начисление
+            request.user.bonus_balance += promo.bonus_amount
+            request.user.save()
+
+            # Создаем запись об активации
+            PromoCodeActivation.objects.create(
+                user=request.user,
+                promo_code=promo
+            )
+
+            return JsonResponse({
+                'success': f'Вам начислено {promo.bonus_amount} бонусных R$!'
+            })
+
+    except PromoCode.DoesNotExist:
+        return JsonResponse({'error': 'Неверный промокод'}, status=400)
 
 
 class CurrencyRatesMiddleware:
@@ -60,6 +102,8 @@ class CurrencyRatesMiddleware:
             return CurrencyRate.objects.get(currency=currency).rate
         except CurrencyRate.DoesNotExist:
             return default
+
+
 def currency_rates(request):
     rates = {}
     for currency in ['RUB', 'USD']:
@@ -70,6 +114,7 @@ def currency_rates(request):
             # Значения по умолчанию
             rates[f'{currency.lower()}_rate'] = Decimal('0.76') if currency == 'RUB' else Decimal('0.016')
     return rates
+
 
 @login_required
 def social_link(request, social):
@@ -294,7 +339,30 @@ def buy_confirm(request):
     purchase_id = request.POST.get('purchase_id')
     promo_code = request.POST.get('promo_code', '')
     selected_gamepass_id = request.POST.get('gamepass_id')
+    if promo_code:
+        try:
+            promo = PromoCode.objects.get(code=promo_code, promo_type='friend')
+            friend = promo.created_by
 
+            # Начисление бонусов
+            if friend != request.user:
+                # Бонус для покупателя
+                request.user.bonus_balance += 10
+                request.user.save()
+
+                # Бонус для друга (только если это первая покупка)
+                if not Purchase.objects.filter(user=friend).exists():
+                    friend.bonus_balance += 10
+                    friend.save()
+
+                # Фиксируем активацию
+                PromoCodeActivation.objects.create(
+                    user=request.user,
+                    promo_code=promo
+                )
+
+        except PromoCode.DoesNotExist:
+            pass
     try:
         purchase = Purchase.objects.get(id=purchase_id, user=request.user)
         place_id = purchase.place_id
