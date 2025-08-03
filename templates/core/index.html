@@ -169,7 +169,7 @@
                 <div class="block-we">
                     <div class="obes">
                         <img src="{% static 'media/kyrs-icon.png' %}" alt="">
-                        <h2 class="lang" data-en="0.016 $ = 1 R$" data-ru="1,3 ₽ = 1 R$">1,3 ₽ = 1 R$</h2>
+                        <h2>{{ request.rub_rate|floatformat:2 }} ₽ = 1 R$</h2>
                         <p class="lang" data-en="Best purchase rate among all platforms"
                            data-ru="Лучший курс покупки среди всех площадок">Лучший курс покупки среди всех площадок</p>
                     </div>
@@ -714,6 +714,10 @@
 </div>
 <script src="{% static 'main.js' %}" defer></script>
 <script>
+    window.currencyRates = {
+        rub: {{ request.rub_rate }},
+        usd: {{ request.usd_rate }}
+    };
     document.querySelectorAll('.im-subscribe').forEach(button => {
         button.addEventListener('click', () => {
             const social = button.getAttribute('data-social');

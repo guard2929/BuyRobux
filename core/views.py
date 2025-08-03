@@ -24,7 +24,8 @@ from .models import Purchase
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404
 from .models import Purchase, CustomUser
-
+from decimal import Decimal
+from .models import CurrencyRate
 
 def index(request):
     context = {}
@@ -41,6 +42,34 @@ def index(request):
         context['bonus_earned'] = 0
     return render(request, 'core/index.html', context)
 
+
+class CurrencyRatesMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        # Добавляем курсы валют в объект запроса
+        request.rub_rate = self.get_rate('RUB', default=Decimal('0.76'))
+        request.usd_rate = self.get_rate('USD', default=Decimal('0.016'))
+
+        response = self.get_response(request)
+        return response
+
+    def get_rate(self, currency, default):
+        try:
+            return CurrencyRate.objects.get(currency=currency).rate
+        except CurrencyRate.DoesNotExist:
+            return default
+def currency_rates(request):
+    rates = {}
+    for currency in ['RUB', 'USD']:
+        try:
+            rate_obj = CurrencyRate.objects.get(currency=currency)
+            rates[f'{currency.lower()}_rate'] = rate_obj.rate
+        except CurrencyRate.DoesNotExist:
+            # Значения по умолчанию
+            rates[f'{currency.lower()}_rate'] = Decimal('0.76') if currency == 'RUB' else Decimal('0.016')
+    return rates
 
 @login_required
 def social_link(request, social):
@@ -76,7 +105,8 @@ def social_link(request, social):
 def buy_robux_step2(request):
     robux_steps = int(request.POST.get('robux_steps', 0))
     robux_amount = 20 + (robux_steps * 20)
-    price = robux_amount * 0.76
+    rub_rate = request.rub_rate
+    price = robux_amount * rub_rate
     promo_code = request.POST.get('promo_code', '')
 
     if robux_amount < 20 or robux_amount > 5000:

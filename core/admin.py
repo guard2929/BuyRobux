@@ -22,3 +22,9 @@ class PurchaseAdmin(admin.ModelAdmin):
 @admin.register(Withdrawal)
 class WithdrawalAdmin(admin.ModelAdmin):
     list_display = ('user', 'amount', 'gamepass_id', 'status', 'created_at')
+from .models import CurrencyRate
+
+@admin.register(CurrencyRate)
+class CurrencyRateAdmin(admin.ModelAdmin):
+    list_display = ('currency', 'rate', 'updated_at')
+    readonly_fields = ('updated_at',)

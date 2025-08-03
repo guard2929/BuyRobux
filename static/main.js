@@ -61,11 +61,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const language = localStorage.getItem('language') || 'ru';
         let currencyValue, currencySymbol;
         if (language === 'en') {
-            currencyValue = (0.016 * rValue).toFixed(2);
-            currencySymbol = '$';
+            currencyValue = (window.currencyRates.usd * rValue).toFixed(2);
         } else {
-            currencyValue = (0.76 * rValue).toFixed(2);
-            currencySymbol = '₽';
+            currencyValue = (window.currencyRates.rub * rValue).toFixed(2);
         }
         result.innerHTML = `${currencyValue} ${currencySymbol} <span style="color: grey;">=</span> ${rValue.toFixed(0)} R$`;
         priceInput.value = currencyValue; // Передаём цену в форму
@@ -191,11 +189,9 @@ function reset() {
         const language = localStorage.getItem('language') || 'ru';
         let currencyValue, currencySymbol;
         if (language === 'en') {
-            currencyValue = 0.32;
-            currencySymbol = '$';
+            currencyValue = (20 * window.currencyRates.usd).toFixed(2);
         } else {
-            currencyValue = 15.20;
-            currencySymbol = '₽';
+            currencyValue = (20 * window.currencyRates.rub).toFixed(2);
         }
         result.innerHTML = `${currencyValue.toFixed(2)} ${currencySymbol} <span style="color: grey;">=</span> 20 R$`;
         slider.style.setProperty('--slider-progress', '0%');
