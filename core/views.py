@@ -47,6 +47,9 @@ def index(request):
 @login_required
 @require_POST
 def activate_promo(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': 'Нужно войти'}, status=403)
+
     promo_code_value = request.POST.get('promo_code', '').strip().upper()
 
     try:
@@ -60,18 +63,15 @@ def activate_promo(request):
         if not request.user.can_activate_promo(promo):
             return JsonResponse({'error': 'Вы уже активировали этот промокод'}, status=400)
 
-        # Активация промокода
         if promo.promo_type == 'friend':
-            # Для дружеских промокодов - бонус при покупке
-            return JsonResponse({
-                'success': 'Промокод принят! Используйте его при покупке.'
-            })
+            return JsonResponse({'error': 'Дружеские промокоды используются при покупке, а не активируются здесь.'},
+                                status=400)
         else:
             # Для общих промокодов - мгновенное начисление
             request.user.bonus_balance += promo.bonus_amount
             request.user.save()
 
-            # Создаем запись об активации
+            # Фиксируем активацию
             PromoCodeActivation.objects.create(
                 user=request.user,
                 promo_code=promo
@@ -339,30 +339,6 @@ def buy_confirm(request):
     purchase_id = request.POST.get('purchase_id')
     promo_code = request.POST.get('promo_code', '')
     selected_gamepass_id = request.POST.get('gamepass_id')
-    if promo_code:
-        try:
-            promo = PromoCode.objects.get(code=promo_code, promo_type='friend')
-            friend = promo.created_by
-
-            # Начисление бонусов
-            if friend != request.user:
-                # Бонус для покупателя
-                request.user.bonus_balance += 10
-                request.user.save()
-
-                # Бонус для друга (только если это первая покупка)
-                if not Purchase.objects.filter(user=friend).exists():
-                    friend.bonus_balance += 10
-                    friend.save()
-
-                # Фиксируем активацию
-                PromoCodeActivation.objects.create(
-                    user=request.user,
-                    promo_code=promo
-                )
-
-        except PromoCode.DoesNotExist:
-            pass
     try:
         purchase = Purchase.objects.get(id=purchase_id, user=request.user)
         place_id = purchase.place_id
@@ -449,14 +425,23 @@ def buy_confirm(request):
 
         if promo_code:
             try:
-                friend = CustomUser.objects.get(promo_code=promo_code)
+                promo = PromoCode.objects.get(code=promo_code, promo_type='friend')
+                friend = promo.created_by
+
                 if friend != request.user:
-                    if not Purchase.objects.filter(user=friend).exists():
-                        friend.bonus_balance += 10
+                    # Проверяем, первая ли это завершенная покупка покупателя
+                    if Purchase.objects.filter(user=request.user, status='completed').count() == 1:
+                        request.user.bonus_balance += 10  # Бонус покупателю
+                        request.user.save()
+                        friend.bonus_balance += 10  # Бонус владельцу промокода
                         friend.save()
-                    request.user.bonus_balance += 10
-                    request.user.save()
-            except CustomUser.DoesNotExist:
+                        # Фиксируем активацию
+                        PromoCodeActivation.objects.create(
+                            user=request.user,
+                            promo_code=promo
+                        )
+
+            except PromoCode.DoesNotExist:
                 pass
 
         return redirect('core:confirm_purchase', purchase_id=purchase.id)
@@ -639,20 +624,6 @@ def social_bonus(request, social):
     request.user.save()
     request.session[f'last_social_bonus_{social}'] = timezone.now()
     return JsonResponse({'success': True})
-
-
-@require_POST
-def activate_promo(request):
-    if not request.user.is_authenticated:
-        return JsonResponse({'error': 'Нужно войти'}, status=403)
-    promo_code = request.POST.get('promo_code')
-    try:
-        friend = CustomUser.objects.get(promo_code=promo_code)
-        if friend == request.user:
-            return JsonResponse({'error': 'Нельзя использовать свой промокод'}, status=400)
-        return JsonResponse({'success': 'Промокод принят! Используйте его при покупке.'})
-    except CustomUser.DoesNotExist:
-        return JsonResponse({'error': 'Неверный промокод'}, status=400)
 
 
 def login_view(request):

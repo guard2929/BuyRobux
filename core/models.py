@@ -30,14 +30,12 @@ class CustomUserManager(BaseUserManager):
             user.set_unusable_password()
         user.save(using=self._db)
         if not user.promo_code:
-            # Генерация уникального промокода
             while True:
                 code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
                 if not CustomUser.objects.filter(promo_code=code).exists():
                     user.promo_code = code
                     break
 
-            # Создаем дружеский промокод
             PromoCode.objects.create(
                 code=code,
                 promo_type='friend',
@@ -68,6 +66,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     vk_subscribed = models.BooleanField(default=False, verbose_name="Подписан на VK")
     discord_joined = models.BooleanField(default=False, verbose_name="Вступил в Discord")
     telegram_joined = models.BooleanField(default=False, verbose_name="Вступил в Telegram")
+    active_promo_code = models.ForeignKey(
+        'PromoCode',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='activated_by_users'
+    )
 
     def can_activate_promo(self, promo_code):
         return not PromoCodeActivation.objects.filter(
