@@ -232,7 +232,7 @@ def buy_robux_step3(request):
 
     universe_id = get_universe_id(place_id)
     if not universe_id:
-        return render(request, 'core/step3.html', {
+        return render(request, 'core/../../SellRobux/step3.html', {
             'error': 'Не удалось получить universe_id для place_id.',
             'robux_amount': robux_amount,
             'price': price,
@@ -246,7 +246,7 @@ def buy_robux_step3(request):
 
     gamepasses = get_gamepasses(universe_id)
     if not gamepasses:
-        return render(request, 'core/step3.html', {
+        return render(request, 'core/../../SellRobux/step3.html', {
             'error': 'Нет доступных Game Passes. Пожалуйста, создайте новый Game Pass.',
             'robux_amount': robux_amount,
             'price': price,
@@ -260,7 +260,7 @@ def buy_robux_step3(request):
 
     if action == 'check':
         if not selected_gamepass_id:
-            return render(request, 'core/step3.html', {
+            return render(request, 'core/../../SellRobux/step3.html', {
                 'error': 'Выберите существующий Game Pass или создайте новый.',
                 'instruction': (
                     '1. Перейдите в Roblox Studio.\n'
@@ -285,7 +285,7 @@ def buy_robux_step3(request):
         matching_gamepass = next(
             (gp for gp in gamepasses if gp['id'] == selected_gamepass_id and gp['price'] == gamepass_price), None)
         if not matching_gamepass:
-            return render(request, 'core/step3.html', {
+            return render(request, 'core/../../SellRobux/step3.html', {
                 'error': f'Game Pass с ID {selected_gamepass_id} не найден или его цена не совпадает с {gamepass_price} R$.',
                 'instruction': (
                     '1. Перейдите в Roblox Studio.\n'
@@ -311,7 +311,7 @@ def buy_robux_step3(request):
         purchase.gamepass_price = gamepass_price
         purchase.save()
 
-    return render(request, 'core/step3.html', {
+    return render(request, 'core/../../SellRobux/step3.html', {
         'robux_amount': robux_amount,
         'price': price,
         'place_id': place_id,
@@ -344,7 +344,7 @@ def buy_confirm(request):
         place_id = purchase.place_id
         universe_id = get_universe_id(place_id)
         if not universe_id:
-            return render(request, 'core/step3.html', {
+            return render(request, 'core/../../SellRobux/step3.html', {
                 'error': f'Не удалось получить universe_id для place_id {place_id}.',
                 'robux': purchase.robux_amount,
                 'price': float(purchase.price),
@@ -363,7 +363,7 @@ def buy_confirm(request):
 
         gamepasses = get_gamepasses(universe_id)
         if not gamepasses:
-            return render(request, 'core/step3.html', {
+            return render(request, 'core/../../SellRobux/step3.html', {
                 'error': f'Не удалось получить список GamePass для universe_id {universe_id}.',
                 'robux': purchase.robux_amount,
                 'price': float(purchase.price),
@@ -381,7 +381,7 @@ def buy_confirm(request):
             })
 
         if not selected_gamepass_id:
-            return render(request, 'core/step3.html', {
+            return render(request, 'core/../../SellRobux/step3.html', {
                 'error': 'Выберите GamePass.',
                 'robux': purchase.robux_amount,
                 'price': float(purchase.price),
@@ -401,7 +401,7 @@ def buy_confirm(request):
         matching_gamepass = next((gp for gp in gamepasses if str(gp['id']) == selected_gamepass_id), None)
         expected_gamepass_price = round(purchase.price / Decimal('0.7'))
         if not matching_gamepass or matching_gamepass['price'] != expected_gamepass_price:
-            return render(request, 'core/step3.html', {
+            return render(request, 'core/../../SellRobux/step3.html', {
                 'error': f'GamePass должен стоить {expected_gamepass_price} Robux.',
                 'robux': purchase.robux_amount,
                 'price': float(purchase.price),
@@ -447,7 +447,7 @@ def buy_confirm(request):
         return redirect('core:confirm_purchase', purchase_id=purchase.id)
 
     except Purchase.DoesNotExist:
-        return render(request, 'core/step3.html', {
+        return render(request, 'core/../../SellRobux/step3.html', {
             'error': 'Ошибка покупки: покупка не найдена.',
             'robux': purchase.robux_amount if 'purchase' in locals() else 0,
             'price': float(purchase.price) if 'purchase' in locals() else 0,
