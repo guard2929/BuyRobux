@@ -285,7 +285,7 @@ def buy_robux_step3(request):
         matching_gamepass = next(
             (gp for gp in gamepasses if gp['id'] == selected_gamepass_id and gp['price'] == gamepass_price), None)
         if not matching_gamepass:
-            return render(request, 'core/../../SellRobux/step3.html', {
+            return render(request, 'core/step3.html', {
                 'error': f'Game Pass с ID {selected_gamepass_id} не найден или его цена не совпадает с {gamepass_price} R$.',
                 'instruction': (
                     '1. Перейдите в Roblox Studio.\n'
